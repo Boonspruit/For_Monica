@@ -489,7 +489,7 @@ p {
 #appreciation,
 #letter {
   justify-content: flex-start;
-  scroll-snap-align: start;
+  scroll-snap-align: none;
   scroll-snap-stop: normal;
 }
 
@@ -497,6 +497,7 @@ p {
 .appreciation-snap,
 .letter-snap {
   scroll-snap-align: start;
+  scroll-margin-top: clamp(1.5rem, 10dvh, 5.6rem);
   scroll-snap-stop: always;
 }
 
@@ -586,7 +587,6 @@ p {
 .love-grid {
   display: grid;
   gap: 0.9rem;
-  padding-bottom: clamp(8rem, 28vh, 14rem);
 }
 
 .love-card {
@@ -638,7 +638,6 @@ p {
   display: grid;
   gap: 0.85rem;
   padding: 0;
-  padding-bottom: clamp(8rem, 28vh, 14rem);
   list-style: none;
 }
 
@@ -751,7 +750,13 @@ p {
 }
 
 .letter-section {
-  padding-bottom: clamp(8rem, 28vh, 14rem);
+  padding-bottom: 2rem;
+}
+
+.section-end-snap {
+  height: clamp(8rem, 28dvh, 14rem);
+  scroll-snap-align: end;
+  scroll-snap-stop: normal;
 }
 
 .letter-card {
