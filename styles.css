@@ -486,14 +486,16 @@ p {
 }
 
 #reasons,
-#appreciation {
+#appreciation,
+#letter {
   justify-content: flex-start;
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
 
 .reasons-snap,
-.appreciation-snap {
+.appreciation-snap,
+.letter-snap {
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
@@ -937,6 +939,16 @@ p {
   100% {
     transform: translateY(-2.5rem) scale(0.98);
     opacity: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .story-page {
+    scroll-snap-align: start;
+  }
+
+  .section.story-page {
+    justify-content: flex-start;
   }
 }
 

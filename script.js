@@ -6,13 +6,13 @@ const loveCards = document.querySelectorAll(".love-card");
 const pages = [...document.querySelectorAll(".story-page")];
 const letterGate = document.querySelector("#letterGate");
 const openLetterButton = document.querySelector("#openLetterButton");
-const reasonsSection = document.querySelector("#reasons");
-const upwardSnapSections = [...document.querySelectorAll("#reasons, #appreciation")];
+const textSnapSections = [...document.querySelectorAll("#reasons, #appreciation, #letter")];
 let currentPageIndex = 0;
 let lastScrollY = window.scrollY;
 let scrollDirection = 0;
 let scrollEndTimer;
 let isProgrammaticSnap = false;
+let touchStartY = 0;
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -80,37 +80,48 @@ function bindPageTransitions() {
   updatePageControls(0);
 }
 
-function scrollToReasonStart(behavior = "smooth") {
-  if (window.location.hash !== "#reasons" || !reasonsSection) {
+function getHashSnapSection() {
+  if (!window.location.hash) {
+    return null;
+  }
+
+  return textSnapSections.find((section) => `#${section.id}` === window.location.hash) || null;
+}
+
+function scrollToHashSectionStart(behavior = "smooth") {
+  const targetSection = getHashSnapSection();
+
+  if (!targetSection) {
     return;
   }
 
   window.requestAnimationFrame(() => {
     window.scrollTo({
-      top: reasonsSection.offsetTop,
+      top: targetSection.offsetTop,
       behavior
     });
   });
 }
 
-function bindReasonSnap() {
-  scrollToReasonStart("auto");
-  window.setTimeout(() => scrollToReasonStart("auto"), 160);
-  window.setTimeout(() => scrollToReasonStart("auto"), 420);
-  window.addEventListener("hashchange", () => scrollToReasonStart());
-  window.addEventListener("pageshow", () => scrollToReasonStart("auto"));
+function bindHashSectionSnap() {
+  scrollToHashSectionStart("auto");
+  window.setTimeout(() => scrollToHashSectionStart("auto"), 160);
+  window.setTimeout(() => scrollToHashSectionStart("auto"), 420);
+  window.addEventListener("hashchange", () => scrollToHashSectionStart());
+  window.addEventListener("pageshow", () => scrollToHashSectionStart("auto"));
 }
 
 function snapBackToSectionIntro() {
-  if (isProgrammaticSnap || scrollDirection >= 0 || window.innerWidth > 640 || document.body.classList.contains("letter-gate-active")) {
+  if (isProgrammaticSnap || window.innerWidth > 640 || document.body.classList.contains("letter-gate-active")) {
     return;
   }
 
-  const currentY = window.scrollY;
-  const targetSection = upwardSnapSections.find((section) => {
-    const sectionTop = section.offsetTop;
-    const sectionBottom = sectionTop + section.offsetHeight;
-    return currentY > sectionTop + 36 && currentY < sectionBottom - 36;
+  const viewportHeight = window.visualViewport?.height || window.innerHeight;
+  const targetSection = textSnapSections.find((section) => {
+    const rect = section.getBoundingClientRect();
+    const isNearIntro = rect.top < viewportHeight * 0.36 && rect.top > -viewportHeight * 0.72;
+    const isReturningToIntro = scrollDirection < 0 && rect.top < 0 && rect.top > -viewportHeight * 1.35;
+    return rect.bottom > viewportHeight * 0.16 && (isNearIntro || isReturningToIntro);
   });
 
   if (!targetSection) {
@@ -144,6 +155,15 @@ function bindMobileUpwardSnap() {
     }
   }, { passive: true });
 
+  window.addEventListener("touchstart", (event) => {
+    touchStartY = event.touches[0]?.clientY || 0;
+  }, { passive: true });
+
+  window.addEventListener("touchmove", (event) => {
+    const currentTouchY = event.touches[0]?.clientY || touchStartY;
+    scrollDirection = currentTouchY > touchStartY ? -1 : currentTouchY < touchStartY ? 1 : scrollDirection;
+  }, { passive: true });
+
   window.addEventListener("touchend", () => scheduleMobileUpwardSnap(180), { passive: true });
   window.addEventListener("wheel", () => scheduleMobileUpwardSnap(160), { passive: true });
   window.addEventListener("keyup", () => scheduleMobileUpwardSnap(80));
@@ -170,8 +190,8 @@ function bindOpeningLetter() {
       openLetterButton.setAttribute("tabindex", "-1");
       document.body.classList.remove("letter-gate-active");
 
-      if (window.location.hash === "#reasons") {
-        scrollToReasonStart();
+      if (getHashSnapSection()) {
+        scrollToHashSectionStart();
         return;
       }
 
@@ -191,7 +211,7 @@ function bindLoveCards() {
 updateDayCounter();
 revealOnScroll();
 bindPageTransitions();
-bindReasonSnap();
+bindHashSectionSnap();
 bindMobileUpwardSnap();
 bindOpeningLetter();
 bindLoveCards();
