@@ -8,11 +8,6 @@ const letterGate = document.querySelector("#letterGate");
 const openLetterButton = document.querySelector("#openLetterButton");
 const textSnapSections = [...document.querySelectorAll("#reasons, #appreciation, #letter")];
 let currentPageIndex = 0;
-let lastScrollY = window.scrollY;
-let scrollDirection = 0;
-let scrollEndTimer;
-let isProgrammaticSnap = false;
-let touchStartY = 0;
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -105,69 +100,8 @@ function scrollToHashSectionStart(behavior = "smooth") {
 
 function bindHashSectionSnap() {
   scrollToHashSectionStart("auto");
-  window.setTimeout(() => scrollToHashSectionStart("auto"), 160);
-  window.setTimeout(() => scrollToHashSectionStart("auto"), 420);
   window.addEventListener("hashchange", () => scrollToHashSectionStart());
   window.addEventListener("pageshow", () => scrollToHashSectionStart("auto"));
-}
-
-function snapBackToSectionIntro() {
-  if (isProgrammaticSnap || window.innerWidth > 640 || document.body.classList.contains("letter-gate-active")) {
-    return;
-  }
-
-  const viewportHeight = window.visualViewport?.height || window.innerHeight;
-  const targetSection = textSnapSections.find((section) => {
-    const rect = section.getBoundingClientRect();
-    const isNearIntro = rect.top < viewportHeight * 0.36 && rect.top > -viewportHeight * 0.72;
-    const isReturningToIntro = scrollDirection < 0 && rect.top < 0 && rect.top > -viewportHeight * 1.35;
-    return rect.bottom > viewportHeight * 0.16 && (isNearIntro || isReturningToIntro);
-  });
-
-  if (!targetSection) {
-    return;
-  }
-
-  isProgrammaticSnap = true;
-  window.scrollTo({
-    top: targetSection.offsetTop,
-    behavior: "smooth"
-  });
-
-  window.setTimeout(() => {
-    isProgrammaticSnap = false;
-  }, 420);
-}
-
-function scheduleMobileUpwardSnap(delay = 120) {
-  window.clearTimeout(scrollEndTimer);
-  scrollEndTimer = window.setTimeout(snapBackToSectionIntro, delay);
-}
-
-function bindMobileUpwardSnap() {
-  window.addEventListener("scroll", () => {
-    const currentY = window.scrollY;
-    scrollDirection = currentY > lastScrollY ? 1 : currentY < lastScrollY ? -1 : scrollDirection;
-    lastScrollY = currentY;
-
-    if (scrollDirection < 0) {
-      scheduleMobileUpwardSnap(140);
-    }
-  }, { passive: true });
-
-  window.addEventListener("touchstart", (event) => {
-    touchStartY = event.touches[0]?.clientY || 0;
-  }, { passive: true });
-
-  window.addEventListener("touchmove", (event) => {
-    const currentTouchY = event.touches[0]?.clientY || touchStartY;
-    scrollDirection = currentTouchY > touchStartY ? -1 : currentTouchY < touchStartY ? 1 : scrollDirection;
-  }, { passive: true });
-
-  window.addEventListener("touchend", () => scheduleMobileUpwardSnap(180), { passive: true });
-  window.addEventListener("wheel", () => scheduleMobileUpwardSnap(160), { passive: true });
-  window.addEventListener("keyup", () => scheduleMobileUpwardSnap(80));
-  window.addEventListener("scrollend", snapBackToSectionIntro);
 }
 
 function bindOpeningLetter() {
@@ -212,6 +146,5 @@ updateDayCounter();
 revealOnScroll();
 bindPageTransitions();
 bindHashSectionSnap();
-bindMobileUpwardSnap();
 bindOpeningLetter();
 bindLoveCards();

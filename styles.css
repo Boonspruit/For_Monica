@@ -490,7 +490,7 @@ p {
 #letter {
   justify-content: flex-start;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal;
 }
 
 .reasons-snap,
@@ -586,6 +586,7 @@ p {
 .love-grid {
   display: grid;
   gap: 0.9rem;
+  padding-bottom: clamp(8rem, 28vh, 14rem);
 }
 
 .love-card {
@@ -637,6 +638,7 @@ p {
   display: grid;
   gap: 0.85rem;
   padding: 0;
+  padding-bottom: clamp(8rem, 28vh, 14rem);
   list-style: none;
 }
 
@@ -749,7 +751,7 @@ p {
 }
 
 .letter-section {
-  padding-bottom: 2rem;
+  padding-bottom: clamp(8rem, 28vh, 14rem);
 }
 
 .letter-card {
@@ -949,6 +951,10 @@ p {
 
   .section.story-page {
     justify-content: flex-start;
+  }
+
+  .section-heading {
+    margin-bottom: 2rem;
   }
 }
 
