@@ -485,6 +485,19 @@ p {
   justify-content: center;
 }
 
+#reasons,
+#appreciation {
+  justify-content: flex-start;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.reasons-snap,
+.appreciation-snap {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
 .intro {
   max-width: 770px;
   margin-left: max(1rem, calc((100% - 1120px) / 2));
