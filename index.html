@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="letter-gate-active">
   <div class="ambient-hearts" aria-hidden="true">
     <span></span>
     <span></span>
@@ -20,9 +20,30 @@
     <span></span>
   </div>
 
-  <header class="hero" id="top">
+  <div class="letter-gate" id="letterGate" role="dialog" aria-modal="true" aria-labelledby="letterGateTitle">
+    <div class="letter-gate-inner">
+      <p class="section-kicker">A letter for Monica</p>
+      <h1 id="letterGateTitle">Tap to open.</h1>
+      <p class="letter-gate-subtitle">I made this little story for you, from my heart.</p>
+
+      <button class="envelope-button" id="openLetterButton" type="button" aria-describedby="letterGateHint" aria-expanded="false">
+        <span class="envelope" aria-hidden="true">
+          <span class="envelope-back"></span>
+          <span class="envelope-paper">
+            <span>For Monica</span>
+          </span>
+          <span class="envelope-flap"></span>
+          <span class="envelope-front"></span>
+          <span class="envelope-seal"></span>
+        </span>
+      </button>
+
+      <p class="letter-gate-hint" id="letterGateHint">Open the letter to begin.</p>
+    </div>
+  </div>
+
+  <header class="hero story-page" id="top" data-page-title="Hello">
     <nav class="nav" aria-label="Love story navigation">
-      <a href="#top" class="brand">For Monica</a>
       <div class="nav-links">
         <a href="#memories">Memories</a>
         <a href="#reasons">Reasons</a>
@@ -33,14 +54,17 @@
     <div class="hero-grid">
       <section class="hero-copy reveal">
         <p class="eyebrow">For Monica, with all my heart</p>
-        <h1>Hi Monica, my love.</h1>
+        <h1>Hi Monica,</h1>
         <p class="hero-subtitle">Every day with you is something I am thankful for.</p>
         <div class="counter-card" aria-live="polite">
           <span class="counter-label">Together for</span>
-          <strong id="daysTogether">Set your start date</strong>
+          <span class="counter-value">
+            <strong id="daysTogether">Set your start date</strong>
+            <span class="counter-since">since January 21, 2024</span>
+          </span>
           <span class="counter-note" id="counterNote">Replace the date in script.js to begin the count.</span>
         </div>
-        <a href="#letter" class="primary-link">Read my love letter</a>
+        <a href="#intro" class="primary-link">Begin the story</a>
       </section>
 
       <section class="hero-art reveal" aria-label="Soft romantic background art">
@@ -50,7 +74,7 @@
   </header>
 
   <main>
-    <section class="section intro reveal">
+    <section class="section intro story-page reveal" id="intro" data-page-title="Thank You">
       <div class="section-kicker">A small thank-you</div>
       <h2>For the girl who means so much to me.</h2>
       <p>
@@ -59,37 +83,106 @@
       </p>
     </section>
 
-    <section class="section" id="memories">
-      <div class="section-heading reveal">
+    <section class="section memories-section" id="memories" data-page-title="Memories">
+      <div class="section-heading memory-snap reveal">
         <div class="section-kicker">Our favorite memories</div>
         <h2>Moments I want to keep close.</h2>
       </div>
 
       <div class="gallery">
-        <article class="photo-card reveal">
-          <div class="photo-slot">Photo 1</div>
-          <p>One of my favorite memories.</p>
-        </article>
-        <article class="photo-card reveal">
-          <div class="photo-slot">Photo 2</div>
-          <p>Your smile means everything.</p>
-        </article>
-        <article class="photo-card reveal">
-          <div class="photo-slot">Photo 3</div>
-          <p>A moment I never want to forget.</p>
-        </article>
-        <article class="photo-card reveal">
-          <div class="photo-slot">Photo 4</div>
-          <p>Just us, and something sweet.</p>
-        </article>
-        <article class="photo-card reveal">
-          <div class="photo-slot">Photo 5</div>
-          <p>A tiny piece of forever.</p>
-        </article>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-01.jpg" alt="Monica and me on January 21, 2024" loading="lazy" decoding="async">
+            </div>
+            <p>One of my favorite memories.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-02.jpg" alt="Monica smiling with me outside" loading="lazy" decoding="async">
+            </div>
+            <p>Your smile means everything. 
+              I still remember how big my smile was on my face the first night we hung out.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-03.jpg" alt="Monica and me posing in a painted cutout" loading="lazy" decoding="async">
+            </div>
+            <p>A moment I never want to forget.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-04.jpg" alt="Monica smiling at a restaurant" loading="lazy" decoding="async">
+            </div>
+            <p>Just us, and something sweet.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-05.jpg" alt="Monica and me together at night" loading="lazy" decoding="async">
+            </div>
+            <p>A tiny piece of forever.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-06.jpg" alt="Monica eating sushi during a funny moment" loading="lazy" decoding="async">
+            </div>
+            <p>Funny moments.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-07.jpg" alt="Monica cooking together at home" loading="lazy" decoding="async">
+            </div>
+            <p>I love the little life we build together, one meal at a time.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-08.jpg" alt="Monica and me on our snow trip" loading="lazy" decoding="async">
+            </div>
+            <p>Cold hands, warm hearts, and a memory I want to keep forever.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-09.jpg" alt="Monica and me at MJC" loading="lazy" decoding="async">
+            </div>
+            <p>I am so grateful MJC brought me to you.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-10.jpg" alt="Monica and me locked in for math on a call" loading="lazy" decoding="async">
+            </div>
+            <p>Even studying feels sweeter when I get to be with you.</p>
+          </article>
+        </div>
+        <div class="photo-slide reveal">
+          <article class="photo-card">
+            <div class="photo-slot">
+              <img src="assets/gallery/photo-11.jpg" alt="Monica on my favorite lockscreen" loading="lazy" decoding="async">
+            </div>
+            <p>My favorite lockscreen, because it reminds me of my favorite person.</p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="reasons">
+    <section class="section story-page" id="reasons" data-page-title="Reasons">
       <div class="section-heading reveal">
         <div class="section-kicker">Reasons I love you</div>
         <h2>Tap each card, my love.</h2>
@@ -123,7 +216,7 @@
       </div>
     </section>
 
-    <section class="section appreciation">
+    <section class="section appreciation story-page" id="appreciation" data-page-title="Appreciation">
       <div class="section-heading reveal">
         <div class="section-kicker">Top five things I appreciate</div>
         <h2>The things I never want to overlook.</h2>
@@ -132,11 +225,11 @@
       <ol class="appreciation-list">
         <li class="reveal">
           <span>01</span>
-          <p>I appreciate the way you [INSERT SOMETHING SHE DOES THAT MAKES YOU FEEL LOVED].</p>
+          <p>I appreciate the way you make me feel loved even during the moments when I do not feel like I deserve it.</p>
         </li>
         <li class="reveal">
           <span>02</span>
-          <p>I appreciate how you always [INSERT A SWEET HABIT OF HERS].</p>
+          <p>I appreciate how you always try to understand me, even when I am quiet, stressed, or bad at explaining what I feel.</p>
         </li>
         <li class="reveal">
           <span>03</span>
@@ -153,7 +246,7 @@
       </ol>
     </section>
 
-    <section class="section apology reveal">
+    <section class="section apology story-page reveal" id="apology" data-page-title="Sorry">
       <div class="apology-card">
         <div class="section-kicker">I am sorry, my love</div>
         <h2>I want to become better for us.</h2>
@@ -168,47 +261,30 @@
       </div>
     </section>
 
-    <section class="section quiz-section" id="quiz">
-      <div class="section-heading reveal">
-        <div class="section-kicker">A tiny love quiz</div>
-        <h2>Important questions, very serious answers.</h2>
-      </div>
-
-      <div class="quiz-card reveal">
-        <ul class="quiz-list">
-          <li>Do you know how much I love you?</li>
-          <li>Will you let me keep annoying you forever?</li>
-          <li>Are you the cutest person in my world?</li>
-          <li>Do you forgive me if I promise to keep growing?</li>
-        </ul>
-
-        <div class="final-question">
-          <p>Will you keep being my favorite person?</p>
-          <div class="answer-row">
-            <button class="yes-button" type="button" id="yesButton">Yes</button>
-            <button class="no-button" type="button" id="noButton">No</button>
-          </div>
-          <p class="love-result" id="loveResult" aria-live="polite"></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section letter-section" id="letter">
+    <section class="section letter-section story-page" id="letter" data-page-title="Letter">
       <article class="letter-card reveal">
-        <div class="section-kicker">Digital love letter</div>
-        <h2>My love Monica,</h2>
+        <div class="section-kicker">Love letter</div>
+        <h2>Monica,</h2>
         <p>
           Thank you for being with me. Thank you for your patience, your love, your heart, and for the moments you stayed even when things were not perfect.
           I know I have made mistakes, and I know there were times when I should have shown up better for you.
           I am sorry for the pain, distance, or sadness I caused.
           You mean so much to me, and I do not want to lose sight of how special you are.
-          I want to love you better, listen better, and be more present.
-          You are not just someone I love - you are someone I am deeply grateful for.
+          I want to love you better, listen better, and be more present. And no matter how difficult things become, 
+          no matter how many obstacles stand in our way, 
+          I will keep showing up. I will keep reaching for you. 
+          I will keep trying. I will keep fighting for us with everything I have
+           because as long as there is still an us to hold onto, 
+           I will never stop doing my best for us.
+          You are not just someone I love, you are someone I am deeply grateful for.
+          You are my home, my peace, and no matter how hard it is, 
+          I will choose you every time.
           Thank you for being you. Thank you for being mine.
         </p>
         <strong>Forever thankful for you, Monica.</strong>
       </article>
     </section>
+
   </main>
 
   <footer class="footer">

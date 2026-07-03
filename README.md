@@ -4,8 +4,8 @@ A mobile-first romantic love story webpage for Monica.
 
 ## Edit the personal details
 
-- Relationship counter: open `script.js` and replace `[INSERT_RELATIONSHIP_START_DATE]` with a date like `2024-01-01`.
-- Photo gallery: replace each `.photo-slot` in `index.html` with an `<img>` tag for your real photos.
+- Relationship counter: open `script.js` and edit `RELATIONSHIP_START_DATE`; it is currently set to `2024-01-21`.
+- Photo gallery: replace files in `assets/gallery/` or edit the captions in the `#memories` section of `index.html`.
 - Appreciation prompts: search for `[INSERT` in `index.html` and personalize the placeholders.
 
 ## Run locally
