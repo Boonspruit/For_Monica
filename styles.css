@@ -501,6 +501,13 @@ p {
   scroll-snap-stop: always;
 }
 
+.content-snap,
+.letter-body-snap {
+  scroll-snap-align: start;
+  scroll-margin-top: clamp(1rem, 8dvh, 4rem);
+  scroll-snap-stop: always;
+}
+
 .intro {
   max-width: 770px;
   margin-left: max(1rem, calc((100% - 1120px) / 2));
