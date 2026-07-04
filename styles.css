@@ -24,7 +24,7 @@ html {
   scroll-padding-block: 0;
 }
 
-html.is-reading-section {
+html.is-free-scroll-zone {
   scroll-snap-type: none;
 }
 

@@ -8,6 +8,7 @@ const letterGate = document.querySelector("#letterGate");
 const openLetterButton = document.querySelector("#openLetterButton");
 const flowerBurst = document.querySelector("#flowerBurst");
 const textSnapSections = [...document.querySelectorAll("#reasons, #appreciation, #letter")];
+const firstLongSection = document.querySelector("#reasons");
 let currentPageIndex = 0;
 
 if ("scrollRestoration" in window.history) {
@@ -122,26 +123,29 @@ function bindHashSectionSnap() {
   window.addEventListener("pageshow", () => scrollToHashSectionStart("auto"));
 }
 
-function updateReadingSectionScroll() {
+function updateFreeScrollZones() {
   const viewportCenter = window.scrollY + window.innerHeight / 2;
   const isReadingSection = textSnapSections.some((section) => {
     const sectionTop = section.offsetTop;
     const sectionBottom = sectionTop + section.offsetHeight;
     return viewportCenter >= sectionTop && viewportCenter <= sectionBottom;
   });
+  const isBeforeLongSections = firstLongSection
+    ? viewportCenter < firstLongSection.offsetTop
+    : false;
 
-  document.documentElement.classList.toggle("is-reading-section", isReadingSection);
+  document.documentElement.classList.toggle("is-free-scroll-zone", isBeforeLongSections || isReadingSection);
 }
 
-function bindReadingSectionScroll() {
+function bindFreeScrollZones() {
   if (textSnapSections.length === 0) {
     return;
   }
 
-  updateReadingSectionScroll();
-  window.addEventListener("scroll", updateReadingSectionScroll, { passive: true });
-  window.addEventListener("resize", updateReadingSectionScroll);
-  window.addEventListener("pageshow", updateReadingSectionScroll);
+  updateFreeScrollZones();
+  window.addEventListener("scroll", updateFreeScrollZones, { passive: true });
+  window.addEventListener("resize", updateFreeScrollZones);
+  window.addEventListener("pageshow", updateFreeScrollZones);
 }
 
 function createLetterFlowers() {
@@ -236,6 +240,6 @@ updateDayCounter();
 revealOnScroll();
 bindPageTransitions();
 bindHashSectionSnap();
-bindReadingSectionScroll();
+bindFreeScrollZones();
 bindOpeningLetter();
 bindLoveCards();
