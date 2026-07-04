@@ -9,6 +9,7 @@ const openLetterButton = document.querySelector("#openLetterButton");
 const flowerBurst = document.querySelector("#flowerBurst");
 const textSnapSections = [...document.querySelectorAll("#reasons, #appreciation, #letter")];
 const firstLongSection = document.querySelector("#reasons");
+const lastLongSection = document.querySelector("#letter");
 let currentPageIndex = 0;
 
 if ("scrollRestoration" in window.history) {
@@ -125,16 +126,13 @@ function bindHashSectionSnap() {
 
 function updateFreeScrollZones() {
   const viewportCenter = window.scrollY + window.innerHeight / 2;
-  const isReadingSection = textSnapSections.some((section) => {
-    const sectionTop = section.offsetTop;
-    const sectionBottom = sectionTop + section.offsetHeight;
-    return viewportCenter >= sectionTop && viewportCenter <= sectionBottom;
-  });
-  const isBeforeLongSections = firstLongSection
-    ? viewportCenter < firstLongSection.offsetTop
+  const startsAtReasons = firstLongSection ? firstLongSection.offsetTop : 0;
+  const endsAfterLetter = lastLongSection ? lastLongSection.offsetTop + lastLongSection.offsetHeight : 0;
+  const isLongTextArea = firstLongSection && lastLongSection
+    ? viewportCenter >= startsAtReasons && viewportCenter <= endsAfterLetter
     : false;
 
-  document.documentElement.classList.toggle("is-free-scroll-zone", isBeforeLongSections || isReadingSection);
+  document.documentElement.classList.toggle("is-free-scroll-zone", isLongTextArea);
 }
 
 function bindFreeScrollZones() {
