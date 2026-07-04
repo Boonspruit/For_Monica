@@ -122,6 +122,28 @@ function bindHashSectionSnap() {
   window.addEventListener("pageshow", () => scrollToHashSectionStart("auto"));
 }
 
+function updateReadingSectionScroll() {
+  const viewportCenter = window.scrollY + window.innerHeight / 2;
+  const isReadingSection = textSnapSections.some((section) => {
+    const sectionTop = section.offsetTop;
+    const sectionBottom = sectionTop + section.offsetHeight;
+    return viewportCenter >= sectionTop && viewportCenter <= sectionBottom;
+  });
+
+  document.documentElement.classList.toggle("is-reading-section", isReadingSection);
+}
+
+function bindReadingSectionScroll() {
+  if (textSnapSections.length === 0) {
+    return;
+  }
+
+  updateReadingSectionScroll();
+  window.addEventListener("scroll", updateReadingSectionScroll, { passive: true });
+  window.addEventListener("resize", updateReadingSectionScroll);
+  window.addEventListener("pageshow", updateReadingSectionScroll);
+}
+
 function createLetterFlowers() {
   if (!flowerBurst || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return;
@@ -214,5 +236,6 @@ updateDayCounter();
 revealOnScroll();
 bindPageTransitions();
 bindHashSectionSnap();
+bindReadingSectionScroll();
 bindOpeningLetter();
 bindLoveCards();

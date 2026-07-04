@@ -24,6 +24,10 @@ html {
   scroll-padding-block: 0;
 }
 
+html.is-reading-section {
+  scroll-snap-type: none;
+}
+
 body {
   margin: 0;
   min-width: 320px;
@@ -568,13 +572,6 @@ p {
   scroll-snap-stop: always;
 }
 
-.content-snap,
-.letter-body-snap {
-  scroll-snap-align: start;
-  scroll-margin-top: clamp(1rem, 8dvh, 4rem);
-  scroll-snap-stop: always;
-}
-
 .intro {
   max-width: 770px;
   margin-left: max(1rem, calc((100% - 1120px) / 2));
@@ -858,10 +855,8 @@ p {
   padding-bottom: 2rem;
 }
 
-.section-end-snap {
+.section-scroll-spacer {
   height: clamp(8rem, 28dvh, 14rem);
-  scroll-snap-align: end;
-  scroll-snap-stop: normal;
 }
 
 .letter-card {
