@@ -14,6 +14,23 @@ if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
 }
 
+function isPageRefresh() {
+  const [navigation] = performance.getEntriesByType("navigation");
+  return navigation?.type === "reload" || performance.navigation?.type === 1;
+}
+
+function resetToOpeningOnRefresh() {
+  if (!isPageRefresh()) {
+    return;
+  }
+
+  if (window.location.hash) {
+    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+  }
+
+  window.scrollTo({ top: 0, behavior: "auto" });
+}
+
 function updateDayCounter() {
   const parsedDate = new Date(`${RELATIONSHIP_START_DATE}T00:00:00`);
 
@@ -192,6 +209,7 @@ function bindLoveCards() {
   });
 }
 
+resetToOpeningOnRefresh();
 updateDayCounter();
 revealOnScroll();
 bindPageTransitions();
