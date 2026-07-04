@@ -591,6 +591,29 @@ p {
   font-size: 0.98rem;
 }
 
+.gallery-message {
+  display: grid;
+  width: 100%;
+  min-height: 18rem;
+  place-items: center;
+  padding: clamp(1.5rem, 7vw, 3rem);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: var(--radius);
+  background: rgba(255, 252, 247, 0.82);
+  box-shadow: 0 18px 44px rgba(136, 74, 86, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.gallery-message p {
+  max-width: 20rem;
+  margin: 0;
+  color: var(--rose-deep);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 9vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+}
+
 .love-grid {
   display: grid;
   gap: 0.9rem;
@@ -1022,6 +1045,10 @@ p {
 
   .photo-slide:first-child .photo-slot {
     min-height: 28rem;
+  }
+
+  .gallery-message-slide {
+    grid-column: 1 / -1;
   }
 
   .love-grid {
