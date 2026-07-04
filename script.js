@@ -11,6 +11,8 @@ const textSnapSections = [...document.querySelectorAll("#reasons, #appreciation,
 const firstLongSection = document.querySelector("#reasons");
 const lastLongSection = document.querySelector("#letter");
 let currentPageIndex = 0;
+let isFreeScrollZoneActive = false;
+let freeScrollFrame = 0;
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -125,14 +127,34 @@ function bindHashSectionSnap() {
 }
 
 function updateFreeScrollZones() {
-  const viewportCenter = window.scrollY + window.innerHeight / 2;
+  const scrollTop = window.scrollY;
+  const viewportBottom = scrollTop + window.innerHeight;
   const startsAtReasons = firstLongSection ? firstLongSection.offsetTop : 0;
   const endsAfterLetter = lastLongSection ? lastLongSection.offsetTop + lastLongSection.offsetHeight : 0;
-  const isLongTextArea = firstLongSection && lastLongSection
-    ? viewportCenter >= startsAtReasons && viewportCenter <= endsAfterLetter
-    : false;
+  const enterBuffer = 8;
+  const exitBuffer = Math.min(window.innerHeight * 0.35, 260);
+  const canUseFreeScroll = firstLongSection && lastLongSection;
 
-  document.documentElement.classList.toggle("is-free-scroll-zone", isLongTextArea);
+  if (!canUseFreeScroll) {
+    isFreeScrollZoneActive = false;
+  } else if (isFreeScrollZoneActive) {
+    isFreeScrollZoneActive = viewportBottom > startsAtReasons - exitBuffer && scrollTop < endsAfterLetter + exitBuffer;
+  } else {
+    isFreeScrollZoneActive = scrollTop >= startsAtReasons - enterBuffer && scrollTop < endsAfterLetter;
+  }
+
+  document.documentElement.classList.toggle("is-free-scroll-zone", isFreeScrollZoneActive);
+}
+
+function requestFreeScrollZoneUpdate() {
+  if (freeScrollFrame) {
+    return;
+  }
+
+  freeScrollFrame = window.requestAnimationFrame(() => {
+    freeScrollFrame = 0;
+    updateFreeScrollZones();
+  });
 }
 
 function bindFreeScrollZones() {
@@ -141,7 +163,7 @@ function bindFreeScrollZones() {
   }
 
   updateFreeScrollZones();
-  window.addEventListener("scroll", updateFreeScrollZones, { passive: true });
+  window.addEventListener("scroll", requestFreeScrollZoneUpdate, { passive: true });
   window.addEventListener("resize", updateFreeScrollZones);
   window.addEventListener("pageshow", updateFreeScrollZones);
 }
