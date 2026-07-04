@@ -6,6 +6,7 @@ const loveCards = document.querySelectorAll(".love-card");
 const pages = [...document.querySelectorAll(".story-page")];
 const letterGate = document.querySelector("#letterGate");
 const openLetterButton = document.querySelector("#openLetterButton");
+const flowerBurst = document.querySelector("#flowerBurst");
 const textSnapSections = [...document.querySelectorAll("#reasons, #appreciation, #letter")];
 let currentPageIndex = 0;
 
@@ -104,6 +105,54 @@ function bindHashSectionSnap() {
   window.addEventListener("pageshow", () => scrollToHashSectionStart("auto"));
 }
 
+function createLetterFlowers() {
+  if (!flowerBurst || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const colors = [
+    ["#f6cfd2", "#f7df9e"],
+    ["#eeb7c1", "#fff3b8"],
+    ["#f8d9e1", "#e7a0ad"],
+    ["#fff1f3", "#d9979e"]
+  ];
+
+  flowerBurst.textContent = "";
+
+  Array.from({ length: 18 }).forEach((_, index) => {
+    const flower = document.createElement("span");
+    const [petal, center] = colors[index % colors.length];
+    const spread = index - 8.5;
+    const dx = spread * 16 + (Math.random() * 22 - 11);
+    const dy = -118 - Math.random() * 128;
+    const size = 13 + Math.random() * 13;
+    const delay = index * 18 + Math.random() * 70;
+    const duration = 860 + Math.random() * 320;
+    const rotate = Math.random() * 120 - 60;
+    const spin = rotate + (Math.random() > 0.5 ? 260 : -260);
+    const scale = 0.82 + Math.random() * 0.42;
+
+    flower.className = "letter-flower";
+    flower.style.setProperty("--petal", petal);
+    flower.style.setProperty("--center", center);
+    flower.style.setProperty("--dx", `${dx}px`);
+    flower.style.setProperty("--dy", `${dy}px`);
+    flower.style.setProperty("--size", `${size}px`);
+    flower.style.setProperty("--delay", `${delay}ms`);
+    flower.style.setProperty("--duration", `${duration}ms`);
+    flower.style.setProperty("--rotate", `${rotate}deg`);
+    flower.style.setProperty("--spin", `${spin}deg`);
+    flower.style.setProperty("--scale", scale.toFixed(2));
+    flower.innerHTML = "<span></span><span></span><span></span><span></span><span></span><i></i>";
+
+    flowerBurst.appendChild(flower);
+  });
+
+  window.setTimeout(() => {
+    flowerBurst.textContent = "";
+  }, 1500);
+}
+
 function bindOpeningLetter() {
   if (!letterGate || !openLetterButton) {
     document.body.classList.remove("letter-gate-active");
@@ -116,6 +165,7 @@ function bindOpeningLetter() {
     }
 
     openLetterButton.setAttribute("aria-expanded", "true");
+    createLetterFlowers();
     letterGate.classList.add("is-opening");
 
     window.setTimeout(() => {

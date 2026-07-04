@@ -244,6 +244,73 @@ body::before {
   animation: gateLift 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.flower-burst {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.letter-flower {
+  position: absolute;
+  left: 50%;
+  top: 67%;
+  width: var(--size);
+  height: var(--size);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5) rotate(var(--rotate));
+  animation: flowerDrift var(--duration) cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
+}
+
+.letter-flower span,
+.letter-flower i {
+  position: absolute;
+  display: block;
+}
+
+.letter-flower span {
+  left: 50%;
+  top: 50%;
+  width: 48%;
+  height: 62%;
+  border-radius: 999px 999px 999px 0;
+  background: var(--petal);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+  transform-origin: 0 0;
+}
+
+.letter-flower span:nth-child(1) {
+  transform: rotate(0deg) translate(2%, -100%);
+}
+
+.letter-flower span:nth-child(2) {
+  transform: rotate(72deg) translate(2%, -100%);
+}
+
+.letter-flower span:nth-child(3) {
+  transform: rotate(144deg) translate(2%, -100%);
+}
+
+.letter-flower span:nth-child(4) {
+  transform: rotate(216deg) translate(2%, -100%);
+}
+
+.letter-flower span:nth-child(5) {
+  transform: rotate(288deg) translate(2%, -100%);
+}
+
+.letter-flower i {
+  left: 50%;
+  top: 50%;
+  width: 34%;
+  height: 34%;
+  border-radius: 999px;
+  background: var(--center);
+  box-shadow: 0 0 0 1px rgba(136, 74, 86, 0.08);
+  transform: translate(-50%, -50%);
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -962,6 +1029,26 @@ p {
   }
 }
 
+@keyframes flowerDrift {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(0.45) rotate(var(--rotate));
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate3d(var(--dx), var(--dy), 0) scale(var(--scale)) rotate(var(--spin));
+  }
+}
+
 @keyframes gateLift {
   0% {
     transform: translateY(0) scale(1);
@@ -1100,5 +1187,9 @@ p {
 
   .letter-gate.is-opening .letter-gate-inner {
     animation: none !important;
+  }
+
+  .flower-burst {
+    display: none !important;
   }
 }
