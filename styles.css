@@ -24,7 +24,8 @@ html {
   scroll-padding-block: 0;
 }
 
-html.is-free-scroll-zone {
+html.is-free-scroll-zone,
+html.is-touch-scrolling {
   scroll-snap-type: none;
 }
 

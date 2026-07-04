@@ -13,6 +13,8 @@ const lastLongSection = document.querySelector("#letter");
 let currentPageIndex = 0;
 let isFreeScrollZoneActive = false;
 let freeScrollFrame = 0;
+let isTouchScrollPaused = false;
+let touchScrollRestoreTimer = 0;
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -157,6 +159,20 @@ function requestFreeScrollZoneUpdate() {
   });
 }
 
+function setTouchScrollPause(isPaused) {
+  isTouchScrollPaused = isPaused;
+  document.documentElement.classList.toggle("is-touch-scrolling", isPaused);
+}
+
+function scheduleTouchScrollRestore() {
+  window.clearTimeout(touchScrollRestoreTimer);
+  touchScrollRestoreTimer = window.setTimeout(() => {
+    touchScrollRestoreTimer = 0;
+    updateFreeScrollZones();
+    setTouchScrollPause(false);
+  }, 260);
+}
+
 function bindFreeScrollZones() {
   if (textSnapSections.length === 0) {
     return;
@@ -166,6 +182,31 @@ function bindFreeScrollZones() {
   window.addEventListener("scroll", requestFreeScrollZoneUpdate, { passive: true });
   window.addEventListener("resize", updateFreeScrollZones);
   window.addEventListener("pageshow", updateFreeScrollZones);
+}
+
+function bindTouchScrollStabilizer() {
+  if (!("ontouchstart" in window) && navigator.maxTouchPoints < 1) {
+    return;
+  }
+
+  window.addEventListener("touchstart", () => {
+    window.clearTimeout(touchScrollRestoreTimer);
+    setTouchScrollPause(true);
+    updateFreeScrollZones();
+  }, { passive: true });
+
+  window.addEventListener("touchmove", () => {
+    setTouchScrollPause(true);
+  }, { passive: true });
+
+  window.addEventListener("touchend", scheduleTouchScrollRestore, { passive: true });
+  window.addEventListener("touchcancel", scheduleTouchScrollRestore, { passive: true });
+
+  window.addEventListener("scroll", () => {
+    if (isTouchScrollPaused) {
+      scheduleTouchScrollRestore();
+    }
+  }, { passive: true });
 }
 
 function createLetterFlowers() {
@@ -261,5 +302,6 @@ revealOnScroll();
 bindPageTransitions();
 bindHashSectionSnap();
 bindFreeScrollZones();
+bindTouchScrollStabilizer();
 bindOpeningLetter();
 bindLoveCards();
